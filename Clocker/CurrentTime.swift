@@ -7,7 +7,6 @@
 
 // Features
 // Update every minute
-// Dark always
 // Dim with swipe up/down
 // Move evey move to prevent burn in
 
