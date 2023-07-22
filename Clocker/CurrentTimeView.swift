@@ -20,7 +20,8 @@ struct CurrentTimeView: View {
 	@State var offset = 0
 	let maxOffset = 25
 	let timer = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
-	@State var opacity: Double = 1.0
+	@AppStorage("opacity") var opacity: Double = 1.0
+
 	
 	var body: some View {
 		HStack {
