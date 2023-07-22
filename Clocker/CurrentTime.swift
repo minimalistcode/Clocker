@@ -21,14 +21,18 @@ struct CurrentTime: View {
 	@State var offset = 0
 	let maxOffset = 25
 	let timer = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
+	@State var opacity: Double = 1.0
 	
 	var body: some View {
 		HStack {
 			Spacer()
-			Text(timeString)
-				.font(.system(size: 225))
-			Text(amPmString)
-				.font(.system(size: 75))
+			Group {
+				Text(timeString)
+					.font(.system(size: 225))
+				Text(amPmString)
+					.font(.system(size: 75))
+			}
+			.opacity(opacity)
 		}
 		.padding()
 		.offset(CGSize(width: offset, height: offset))
@@ -44,6 +48,10 @@ struct CurrentTime: View {
 			offset = Int.random(in: -maxOffset...maxOffset)
 			print(offset)
 		}
+		.gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)
+			.onChanged({ value in
+				opacity = 1.0 - value.location.y / UIScreen.main.bounds.height
+			}))
 	}
 		
 	func updateClock() {
