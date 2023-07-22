@@ -11,7 +11,7 @@
 		158591132A6C036700655160 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158591122A6C036700655160 /* ContentView.swift */; };
 		158591152A6C036900655160 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 158591142A6C036900655160 /* Assets.xcassets */; };
 		158591192A6C036900655160 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 158591182A6C036900655160 /* Preview Assets.xcassets */; };
-		158591202A6C129B00655160 /* CurrentTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1585911F2A6C129B00655160 /* CurrentTime.swift */; };
+		158591202A6C129B00655160 /* CurrentTimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1585911F2A6C129B00655160 /* CurrentTimeView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,7 +21,7 @@
 		158591142A6C036900655160 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		158591162A6C036900655160 /* Clocker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Clocker.entitlements; sourceTree = "<group>"; };
 		158591182A6C036900655160 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		1585911F2A6C129B00655160 /* CurrentTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentTime.swift; sourceTree = "<group>"; };
+		1585911F2A6C129B00655160 /* CurrentTimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentTimeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,7 +56,7 @@
 			children = (
 				158591102A6C036700655160 /* ClockerApp.swift */,
 				158591122A6C036700655160 /* ContentView.swift */,
-				1585911F2A6C129B00655160 /* CurrentTime.swift */,
+				1585911F2A6C129B00655160 /* CurrentTimeView.swift */,
 				158591142A6C036900655160 /* Assets.xcassets */,
 				158591162A6C036900655160 /* Clocker.entitlements */,
 				158591172A6C036900655160 /* Preview Content */,
@@ -142,7 +142,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				158591202A6C129B00655160 /* CurrentTime.swift in Sources */,
+				158591202A6C129B00655160 /* CurrentTimeView.swift in Sources */,
 				158591132A6C036700655160 /* ContentView.swift in Sources */,
 				158591112A6C036700655160 /* ClockerApp.swift in Sources */,
 			);

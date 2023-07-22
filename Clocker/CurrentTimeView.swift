@@ -24,7 +24,6 @@ struct CurrentTimeView: View {
 	
 	var body: some View {
 		HStack {
-			Spacer()
 			Group {
 				Text(timeString)
 					.font(.system(size: 225))
