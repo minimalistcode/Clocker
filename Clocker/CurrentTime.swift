@@ -18,24 +18,31 @@ struct CurrentTime: View {
 	@Environment(\.colorScheme) private var colorScheme
 	@State var timeString = ""
 	@State var amPmString = ""
+	@State var offset = 0
+	let maxOffset = 25
 	let timer = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
 	
 	var body: some View {
 		HStack {
 			Spacer()
 			Text(timeString)
-				.font(.system(size: 250))
+				.font(.system(size: 225))
 			Text(amPmString)
 				.font(.system(size: 75))
 		}
+		.padding()
+		.offset(CGSize(width: offset, height: offset))
 		.foregroundColor(colorScheme == .light ? .black : .white)
 		.background(colorScheme == .light ? .white : .black)
 		.onAppear {
+			// Keep the display on all the time
+			UIApplication.shared.isIdleTimerDisabled = true
 			updateClock()
 		}
 		.onReceive(timer) { time in
 			updateClock()
-			print(Date())
+			offset = Int.random(in: -maxOffset...maxOffset)
+			print(offset)
 		}
 	}
 		
