@@ -15,13 +15,13 @@ import SwiftUI
 
 struct CurrentTimeView: View {
 	@Environment(\.colorScheme) private var colorScheme
+	@AppStorage("opacity") var opacity: Double = 1.0
 	@State var timeString = ""
 	@State var amPmString = ""
 	@State var offset = 0
 	let maxOffset = 25
-	let timer = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
-	@AppStorage("opacity") var opacity: Double = 1.0
-
+	let timerClockUodate = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+	let timerBurnInMove = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
 	
 	var body: some View {
 		HStack {
@@ -43,10 +43,11 @@ struct CurrentTimeView: View {
 			UIApplication.shared.isIdleTimerDisabled = true
 			updateClock()
 		}
-		.onReceive(timer) { time in
+		.onReceive(timerClockUodate) { time in
 			updateClock()
+		}
+		.onReceive(timerBurnInMove) { time in
 			offset = Int.random(in: -maxOffset...maxOffset)
-			print(offset)
 		}
 		.gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)
 			.onChanged({ value in
