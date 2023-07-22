@@ -37,6 +37,7 @@ struct CurrentTimeView: View {
 		.offset(CGSize(width: offset, height: offset))
 		.foregroundColor(colorScheme == .light ? .black : .white)
 		.background(colorScheme == .light ? .white : .black)
+		.preferredColorScheme(.dark)
 		.onAppear {
 			// Keep the display on all the time
 			UIApplication.shared.isIdleTimerDisabled = true
