@@ -13,7 +13,7 @@
 import SwiftUI
 
 
-struct CurrentTime: View {
+struct CurrentTimeView: View {
 	@Environment(\.colorScheme) private var colorScheme
 	@State var timeString = ""
 	@State var amPmString = ""
@@ -66,5 +66,5 @@ struct CurrentTime: View {
 }
 
 #Preview {
-	CurrentTime()
+	CurrentTimeView()
 }
