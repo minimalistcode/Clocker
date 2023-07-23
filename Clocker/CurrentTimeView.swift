@@ -54,8 +54,7 @@ struct CurrentTimeView: View {
 			.statusBar(hidden: true)
 			.persistentSystemOverlays(.hidden)
 			.onAppear {
-				fontSizeTime = fontSizeTimePortrait
-				fontSizeAmPm = fontSizeAmPmPortriat
+				updateOrientation()
 				// Keep the display on all the time
 				UIApplication.shared.isIdleTimerDisabled = true
 				updateClock()
@@ -84,25 +83,13 @@ struct CurrentTimeView: View {
 			}
 			.gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)
 				.onChanged({ value in
-					print(UIScreen.main.bounds.height)
 					opacity = 1.0 - value.location.y / UIScreen.main.bounds.height
 				}))
 			.sheet(isPresented: $isShowingSettingsView) {
 				SettingsView()
 			}
 			.onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
-				switch UIDevice.current.orientation {
-				case .portrait:
-					fontSizeTime = fontSizeTimePortrait
-					fontSizeAmPm = fontSizeAmPmPortriat
-				case .portraitUpsideDown:
-					break
-				case .landscapeLeft, .landscapeRight:
-					fontSizeTime = fontSizeTimeLandscape
-					fontSizeAmPm = fontSizeAmPmLandscape
-				default:
-					break
-				}
+				updateOrientation()
 			}
 			
 			if isShowingSettingsButton {
@@ -124,6 +111,21 @@ struct CurrentTimeView: View {
 					Spacer()
 				}
 			}
+		}
+	}
+	
+	func updateOrientation() {
+		switch UIDevice.current.orientation {
+		case .portrait:
+			fontSizeTime = fontSizeTimePortrait
+			fontSizeAmPm = fontSizeAmPmPortriat
+		case .portraitUpsideDown:
+			break
+		case .landscapeLeft, .landscapeRight:
+			fontSizeTime = fontSizeTimeLandscape
+			fontSizeAmPm = fontSizeAmPmLandscape
+		default:
+			break
 		}
 	}
 	
