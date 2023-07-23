@@ -26,8 +26,11 @@ struct CurrentTimeView: View {
 	@State var amPmString = ""
 	@State var offset = 0
 	let maxOffset = 25
-	let timerClockUodate = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+	@State var timerClockUodate = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 	let timerBurnInMove = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
+	@State var savedDate: Date?
+	@State var clockSynced = false
+	
 	@State var isShowingSettingsButton = false
 	@State var isShowingSettingsView = false
 	
@@ -66,6 +69,28 @@ struct CurrentTimeView: View {
 			}
 			.onReceive(timerClockUodate) { time in
 				updateClock()
+				// When synced to the minut then only update eveyr miinute
+				if !clockSynced {
+					if let savedDate = savedDate {
+						let dateFormatter = DateFormatter()
+						dateFormatter.locale = Locale(identifier: "en_US")
+						dateFormatter.dateFormat = "mm"
+						let savedDateMinutes = Int(dateFormatter.string(from: savedDate))
+						let currentDateMinutes = Int(dateFormatter.string(from: Date()))
+						
+
+						print("currentDateMinutes+2: \(currentDateMinutes!) > savedDateMinutes: \(savedDateMinutes! + 1)")
+						
+						if savedDateMinutes != nil, currentDateMinutes != nil, currentDateMinutes! > (savedDateMinutes! + 1) {
+							print("SETTING TIMER")
+							clockSynced = true
+							timerClockUodate = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
+						}
+					}
+					else {
+						savedDate = Date()
+					}
+				}
 			}
 			.onReceive(timerBurnInMove) { time in
 				offset = Int.random(in: -maxOffset...maxOffset)
@@ -141,3 +166,4 @@ struct CurrentTimeView: View {
 #Preview {
 	CurrentTimeView()
 }
+
