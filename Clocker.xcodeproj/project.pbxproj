@@ -12,6 +12,8 @@
 		158591152A6C036900655160 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 158591142A6C036900655160 /* Assets.xcassets */; };
 		158591192A6C036900655160 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 158591182A6C036900655160 /* Preview Assets.xcassets */; };
 		158591202A6C129B00655160 /* CurrentTimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1585911F2A6C129B00655160 /* CurrentTimeView.swift */; };
+		15A0EEA22A6C9FB0007644B5 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A0EEA12A6C9FB0007644B5 /* SettingsView.swift */; };
+		15A0EEA42A6CA983007644B5 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A0EEA32A6CA983007644B5 /* AboutView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +24,8 @@
 		158591162A6C036900655160 /* Clocker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Clocker.entitlements; sourceTree = "<group>"; };
 		158591182A6C036900655160 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		1585911F2A6C129B00655160 /* CurrentTimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentTimeView.swift; sourceTree = "<group>"; };
+		15A0EEA12A6C9FB0007644B5 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		15A0EEA32A6CA983007644B5 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +61,8 @@
 				158591102A6C036700655160 /* ClockerApp.swift */,
 				158591122A6C036700655160 /* ContentView.swift */,
 				1585911F2A6C129B00655160 /* CurrentTimeView.swift */,
+				15A0EEA12A6C9FB0007644B5 /* SettingsView.swift */,
+				15A0EEA32A6CA983007644B5 /* AboutView.swift */,
 				158591142A6C036900655160 /* Assets.xcassets */,
 				158591162A6C036900655160 /* Clocker.entitlements */,
 				158591172A6C036900655160 /* Preview Content */,
@@ -101,6 +107,7 @@
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1500;
 				LastUpgradeCheck = 1500;
+				ORGANIZATIONNAME = "Minimalist Code LLC";
 				TargetAttributes = {
 					1585910C2A6C036700655160 = {
 						CreatedOnToolsVersion = 15.0;
@@ -144,7 +151,9 @@
 			files = (
 				158591202A6C129B00655160 /* CurrentTimeView.swift in Sources */,
 				158591132A6C036700655160 /* ContentView.swift in Sources */,
+				15A0EEA22A6C9FB0007644B5 /* SettingsView.swift in Sources */,
 				158591112A6C036700655160 /* ClockerApp.swift in Sources */,
+				15A0EEA42A6CA983007644B5 /* AboutView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
