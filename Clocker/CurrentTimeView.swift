@@ -31,8 +31,8 @@ struct CurrentTimeView: View {
 	@State var isShowingSettingsButton = false
 	@State var isShowingSettingsView = false
 	
-	let fontSizeTimePortrait: CGFloat = 125
-	let fontSizeAmPmPortriat: CGFloat = 50
+	let fontSizeTimePortrait: CGFloat = 110
+	let fontSizeAmPmPortriat: CGFloat = 40
 	let fontSizeTimeLandscape:  CGFloat = 225
 	let fontSizeAmPmLandscape:  CGFloat = 75
 	@State var fontSizeTime: CGFloat = 0
@@ -54,6 +54,8 @@ struct CurrentTimeView: View {
 			.foregroundColor(colorScheme == .light ? .black : .white)
 			.background(colorScheme == .light ? .white : .black)
 			.preferredColorScheme(.dark)
+			.statusBar(hidden: true)
+			.persistentSystemOverlays(.hidden)
 			.onAppear {
 				fontSizeTime = fontSizeTimePortrait
 				fontSizeAmPm = fontSizeAmPmPortriat
@@ -73,6 +75,7 @@ struct CurrentTimeView: View {
 			}
 			.gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)
 				.onChanged({ value in
+					print(UIScreen.main.bounds.height)
 					opacity = 1.0 - value.location.y / UIScreen.main.bounds.height
 				}))
 			.sheet(isPresented: $isShowingSettingsView) {
@@ -80,14 +83,14 @@ struct CurrentTimeView: View {
 			}
 			.onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
 				switch UIDevice.current.orientation {
-				case .portrait, .portraitUpsideDown:
+				case .portrait:
 					fontSizeTime = fontSizeTimePortrait
 					fontSizeAmPm = fontSizeAmPmPortriat
+				case .portraitUpsideDown:
 					break
 				case .landscapeLeft, .landscapeRight:
 					fontSizeTime = fontSizeTimeLandscape
 					fontSizeAmPm = fontSizeAmPmLandscape
-					break
 				default:
 					break
 				}
