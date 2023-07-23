@@ -13,8 +13,13 @@
 
 import SwiftUI
 
+/*
+ if horizontalSizeClass == .compact {
+ 
+ */
 
 struct CurrentTimeView: View {
+	@Environment(\.horizontalSizeClass) var horizontalSizeClass: UserInterfaceSizeClass?
 	@Environment(\.colorScheme) private var colorScheme
 	@AppStorage("opacity") var opacity: Double = 1.0
 	@State var timeString = ""
@@ -26,14 +31,21 @@ struct CurrentTimeView: View {
 	@State var isShowingSettingsButton = false
 	@State var isShowingSettingsView = false
 	
+	let fontSizeTimePortrait: CGFloat = 125
+	let fontSizeAmPmPortriat: CGFloat = 50
+	let fontSizeTimeLandscape:  CGFloat = 225
+	let fontSizeAmPmLandscape:  CGFloat = 75
+	@State var fontSizeTime: CGFloat = 0
+	@State var fontSizeAmPm: CGFloat = 0
+	
 	var body: some View {
 		ZStack {
 			HStack {
 				Group {
 					Text(timeString)
-						.font(.system(size: 225))
+						.font(.system(size: fontSizeTime))
 					Text(amPmString)
-						.font(.system(size: 75))
+						.font(.system(size: fontSizeAmPm))
 				}
 				.opacity(opacity)
 			}
@@ -43,6 +55,8 @@ struct CurrentTimeView: View {
 			.background(colorScheme == .light ? .white : .black)
 			.preferredColorScheme(.dark)
 			.onAppear {
+				fontSizeTime = fontSizeTimePortrait
+				fontSizeAmPm = fontSizeAmPmPortriat
 				// Keep the display on all the time
 				UIApplication.shared.isIdleTimerDisabled = true
 				updateClock()
@@ -61,6 +75,24 @@ struct CurrentTimeView: View {
 				.onChanged({ value in
 					opacity = 1.0 - value.location.y / UIScreen.main.bounds.height
 				}))
+			.sheet(isPresented: $isShowingSettingsView) {
+				SettingsView()
+			}
+			.onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
+				switch UIDevice.current.orientation {
+				case .portrait, .portraitUpsideDown:
+					fontSizeTime = fontSizeTimePortrait
+					fontSizeAmPm = fontSizeAmPmPortriat
+					break
+				case .landscapeLeft, .landscapeRight:
+					fontSizeTime = fontSizeTimeLandscape
+					fontSizeAmPm = fontSizeAmPmLandscape
+					break
+				default:
+					break
+				}
+			}
+			
 			if isShowingSettingsButton {
 				VStack {
 					HStack {
@@ -80,12 +112,9 @@ struct CurrentTimeView: View {
 					Spacer()
 				}
 			}
-			if isShowingSettingsView {
-				SettingsView()
-			}
 		}
 	}
-		
+	
 	func updateClock() {
 		let dateFormatter = DateFormatter()
 		dateFormatter.locale = Locale(identifier: "en_US")

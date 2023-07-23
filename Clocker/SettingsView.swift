@@ -10,12 +10,29 @@ import SwiftUI
 
 struct SettingsView: View {
 	@Environment(\.colorScheme) private var colorScheme
+	@Environment(\.dismiss) private var dismiss
 	
 	var body: some View {
 		ZStack {
 			Rectangle()
 				.foregroundColor(colorScheme == .light ? .white : .black)
 			AboutView()
+			VStack {
+				HStack {
+					Spacer()
+					Button(action: {
+						dismiss()
+					}, label: {
+						Image(systemName: "x.circle")
+							.resizable()
+							.frame(width: 25, height: 25)
+							.foregroundColor(colorScheme == .light ? .black : .white)
+							.background(colorScheme == .light ? .white : .black)
+					})
+					.padding()
+				}
+				Spacer()
+			}
 		}
 	}
 }
