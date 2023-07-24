@@ -123,6 +123,8 @@ struct CurrentTimeView: View {
 			fontSizeTime = fontSizeTimeLandscape
 			fontSizeAmPm = fontSizeAmPmLandscape
 		default:
+			fontSizeTime = fontSizeTimePortrait
+			fontSizeAmPm = fontSizeAmPmPortriat
 			break
 		}
 	}
