@@ -98,7 +98,6 @@ struct CurrentTimeView: View {
 		.contentShape(Rectangle())
 		.gesture(DragGesture(minimumDistance: 1)
 			.onChanged({ gesture in
-				print(".gesture.onChanged location: \(gesture.location)")
 				opacity = 1.0 - gesture.location.y / UIScreen.main.bounds.height
 			})
 		)
