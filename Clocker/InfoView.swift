@@ -1,5 +1,5 @@
 //
-//  SettingsView.swift
+//  InfoView.swift
 //  Clocker
 //
 //  Created by Jeff Zacharias on 7/22/23.

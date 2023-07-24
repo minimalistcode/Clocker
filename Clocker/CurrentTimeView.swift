@@ -67,7 +67,7 @@ struct CurrentTimeView: View {
 				offset = Int.random(in: -maxOffset...maxOffset)
 			}
 			.sheet(isPresented: $isShowingSettingsView) {
-				SettingsView()
+				InfoView()
 			}
 			.onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
 				updateOrientation()
@@ -110,6 +110,7 @@ struct CurrentTimeView: View {
 					.padding()
 				}
 				Spacer()
+				Text("Swipe up/down to adjust brightness")
 			}
 		}
 	}
