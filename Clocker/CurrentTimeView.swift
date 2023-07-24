@@ -22,7 +22,7 @@ struct CurrentTimeView: View {
 	@State var offset = 0
 	let maxOffset = 25
 	@State var timerClock = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-	let timerBurnInMove = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
+	@State var timerBurnInMove = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
 	@State var clockSynced = false
 	
 	@State var isShowingSettingsButton = false
@@ -141,6 +141,7 @@ struct CurrentTimeView: View {
 				updateClock()
 				clockSynced = true
 				timerClock = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
+				timerBurnInMove = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
 			}
 		}
 	}
