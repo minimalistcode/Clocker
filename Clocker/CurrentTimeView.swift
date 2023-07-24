@@ -119,6 +119,8 @@ struct CurrentTimeView: View {
 		case .portrait:
 			fontSizeTime = fontSizeTimePortrait
 			fontSizeAmPm = fontSizeAmPmPortriat
+		case .portraitUpsideDown:
+			break
 		case .landscapeLeft, .landscapeRight:
 			fontSizeTime = fontSizeTimeLandscape
 			fontSizeAmPm = fontSizeAmPmLandscape
