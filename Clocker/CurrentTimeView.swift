@@ -111,6 +111,7 @@ struct CurrentTimeView: View {
 				}
 				Spacer()
 				Text("Swipe up/down to adjust brightness")
+					.opacity(opacity)
 			}
 		}
 	}
