@@ -26,6 +26,7 @@ struct CurrentTimeView: View {
 	@State var clockSynced = false
 	
 	@State var isShowingSettingsButton = false
+	var settingsButtonDisplaySeconds = 10
 	@State var isShowingSettingsView = false
 	
 	let fontSizeTimePortrait: CGFloat = 110
@@ -37,6 +38,7 @@ struct CurrentTimeView: View {
 	
 	var body: some View {
 		ZStack {
+			Rectangle().foregroundColor(.clear) // Need to tap gesture to work on whole display
 			HStack {
 				Text(timeString)
 					.font(.system(size: fontSizeTime))
@@ -98,7 +100,7 @@ struct CurrentTimeView: View {
 					Button(action: {
 						isShowingSettingsView = true
 					}, label: {
-						Image(systemName: "gearshape")
+						Image(systemName: "info.circle")
 							.resizable()
 							.frame(width: 25, height: 25)
 							.foregroundColor(colorScheme == .light ? .black : .white)
@@ -162,7 +164,7 @@ struct CurrentTimeView: View {
 	func showSettingsButton() {
 		Task {
 			isShowingSettingsButton = true
-			try? await Task.sleep(for: .seconds(15))
+			try? await Task.sleep(for: .seconds(settingsButtonDisplaySeconds))
 			isShowingSettingsButton = false
 		}
 	}
