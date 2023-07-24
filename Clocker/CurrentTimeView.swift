@@ -116,15 +116,14 @@ struct CurrentTimeView: View {
 	
 	func updateOrientation() {
 		switch UIDevice.current.orientation {
-		case .portrait, .portraitUpsideDown:
+		case .portrait:
 			fontSizeTime = fontSizeTimePortrait
 			fontSizeAmPm = fontSizeAmPmPortriat
 		case .landscapeLeft, .landscapeRight:
 			fontSizeTime = fontSizeTimeLandscape
 			fontSizeAmPm = fontSizeAmPmLandscape
 		default:
-			fontSizeTime = fontSizeTimePortrait
-			fontSizeAmPm = fontSizeAmPmPortriat
+			break
 		}
 	}
 	
