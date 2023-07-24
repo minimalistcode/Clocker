@@ -7,9 +7,9 @@
 //
 
 // Features
-// Update every minute
-// Dim with swipe up/down
-// Move evey move to prevent burn in
+// - Updates every minute
+// - Dim with swipe up/down
+// - Move evey minute to prevent burn in
 
 import SwiftUI
 
@@ -21,7 +21,7 @@ struct CurrentTimeView: View {
 	@State var amPmString = ""
 	@State var offset = 0
 	let maxOffset = 25
-	@State var timerClockUodate = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+	@State var timerClock = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 	let timerBurnInMove = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
 	@State var clockSynced = false
 	
@@ -38,16 +38,14 @@ struct CurrentTimeView: View {
 	var body: some View {
 		ZStack {
 			HStack {
-				Group {
-					Text(timeString)
-						.font(.system(size: fontSizeTime))
-					Text(amPmString)
-						.font(.system(size: fontSizeAmPm))
-				}
-				.opacity(opacity)
+				Text(timeString)
+					.font(.system(size: fontSizeTime))
+				Text(amPmString)
+					.font(.system(size: fontSizeAmPm))
 			}
 			.padding()
 			.offset(CGSize(width: offset, height: offset))
+			.opacity(opacity)
 			.foregroundColor(colorScheme == .light ? .black : .white)
 			.background(colorScheme == .light ? .white : .black)
 			.preferredColorScheme(.dark)
@@ -60,20 +58,8 @@ struct CurrentTimeView: View {
 				updateClock()
 				showSettingsButton()
 			}
-			.onReceive(timerClockUodate) { time in
-				updateClock()
-				// When synced to the minute then only update eveyr miinute
-				if !clockSynced {
-					let dateFormatter = DateFormatter()
-					dateFormatter.locale = Locale(identifier: "en_US")
-					dateFormatter.dateFormat = "ss"
-					let seconds = dateFormatter.string(from: Date())
-					if seconds == "00" {
-						updateClock()
-						clockSynced = true
-						timerClockUodate = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
-					}
-				}
+			.onReceive(timerClock) { time in
+				syncClock()
 			}
 			.onReceive(timerBurnInMove) { time in
 				offset = Int.random(in: -maxOffset...maxOffset)
@@ -81,10 +67,6 @@ struct CurrentTimeView: View {
 			.onTapGesture {
 				showSettingsButton()
 			}
-			.gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)
-				.onChanged({ value in
-					opacity = 1.0 - value.location.y / UIScreen.main.bounds.height
-				}))
 			.sheet(isPresented: $isShowingSettingsView) {
 				SettingsView()
 			}
@@ -112,20 +94,45 @@ struct CurrentTimeView: View {
 				}
 			}
 		}
+		// This content shape and geture are needed to make the gesutre work over the whole display.
+		.contentShape(Rectangle())
+		.gesture(DragGesture(minimumDistance: 1)
+			.onChanged({ gesture in
+				print(".gesture.onChanged location: \(gesture.location)")
+				opacity = 1.0 - gesture.location.y / UIScreen.main.bounds.height
+			})
+		)
 	}
+	
+	// MARK: Functions
 	
 	func updateOrientation() {
 		switch UIDevice.current.orientation {
-		case .portrait:
+		case .portrait, .portraitUpsideDown:
 			fontSizeTime = fontSizeTimePortrait
 			fontSizeAmPm = fontSizeAmPmPortriat
-		case .portraitUpsideDown:
-			break
 		case .landscapeLeft, .landscapeRight:
 			fontSizeTime = fontSizeTimeLandscape
 			fontSizeAmPm = fontSizeAmPmLandscape
 		default:
-			break
+			fontSizeTime = fontSizeTimePortrait
+			fontSizeAmPm = fontSizeAmPmPortriat
+		}
+	}
+	
+	func syncClock() {
+		updateClock()
+		// When synced to the minute then only update eveyr miinute
+		if !clockSynced {
+			let dateFormatter = DateFormatter()
+			dateFormatter.locale = Locale(identifier: "en_US")
+			dateFormatter.dateFormat = "ss"
+			let seconds = dateFormatter.string(from: Date())
+			if seconds == "00" {
+				updateClock()
+				clockSynced = true
+				timerClock = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
+			}
 		}
 	}
 	
