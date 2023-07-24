@@ -64,43 +64,52 @@ struct CurrentTimeView: View {
 			.onReceive(timerBurnInMove) { time in
 				offset = Int.random(in: -maxOffset...maxOffset)
 			}
-			.onTapGesture {
-				showSettingsButton()
-			}
 			.sheet(isPresented: $isShowingSettingsView) {
 				SettingsView()
 			}
 			.onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
 				updateOrientation()
 			}
-			
 			if isShowingSettingsButton {
-				VStack {
-					HStack {
-						Spacer()
-						Button(action: {
-							isShowingSettingsView = true
-						}, label: {
-							Image(systemName: "gearshape")
-								.resizable()
-								.frame(width: 25, height: 25)
-								.foregroundColor(colorScheme == .light ? .black : .white)
-								.background(colorScheme == .light ? .white : .black)
-								.opacity(opacity)
-						})
-						.padding()
-					}
-					Spacer()
-				}
+				SettingsButtonView(isShowingSettingsView: $isShowingSettingsView, opacity: $opacity)
 			}
 		}
 		// This content shape and geture are needed to make the gesutre work over the whole display.
 		.contentShape(Rectangle())
-		.gesture(DragGesture(minimumDistance: 1)
+		.gesture(DragGesture(minimumDistance: 1, coordinateSpace: .local)
 			.onChanged({ gesture in
 				opacity = 1.0 - gesture.location.y / UIScreen.main.bounds.height
 			})
 		)
+		.onTapGesture {
+			showSettingsButton()
+		}
+	}
+	
+	struct SettingsButtonView: View {
+		@Environment(\.colorScheme) private var colorScheme
+		@Binding var isShowingSettingsView: Bool
+		@Binding var opacity: Double
+		
+		var body: some View {
+			VStack {
+				HStack {
+					Spacer()
+					Button(action: {
+						isShowingSettingsView = true
+					}, label: {
+						Image(systemName: "gearshape")
+							.resizable()
+							.frame(width: 25, height: 25)
+							.foregroundColor(colorScheme == .light ? .black : .white)
+							.background(colorScheme == .light ? .white : .black)
+							.opacity(opacity)
+					})
+					.padding()
+				}
+				Spacer()
+			}
+		}
 	}
 	
 	// MARK: Functions
