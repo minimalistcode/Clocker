@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct SettingsView: View {
+struct InfoView: View {
 	@Environment(\.colorScheme) private var colorScheme
 	@Environment(\.dismiss) private var dismiss
 	
@@ -38,5 +38,5 @@ struct SettingsView: View {
 }
 
 #Preview {
-	SettingsView()
+	InfoView()
 }
