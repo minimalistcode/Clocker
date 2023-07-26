@@ -17,13 +17,8 @@ struct CurrentTimeView: View {
 	@Environment(\.horizontalSizeClass) var horizontalSizeClass: UserInterfaceSizeClass?
 	@Environment(\.colorScheme) private var colorScheme
 	@AppStorage("opacity") var opacity: Double = 1.0
-	@State var timeString = ""
-	@State var amPmString = ""
-	@State var offset = 0
-	let maxOffset = 25
-	@State var timerClock = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+	@ObservedObject var clockSync = ClockSync()
 	@State var timerBurnInMove = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
-	@State var clockSynced = false
 	
 	@State var isShowingSettingsButton = false
 	var settingsButtonDisplaySeconds = 10
@@ -40,13 +35,13 @@ struct CurrentTimeView: View {
 		ZStack {
 			Rectangle().foregroundColor(.clear) // Need to tap gesture to work on whole display
 			HStack {
-				Text(timeString)
+				Text(clockSync.timeString)
 					.font(.system(size: fontSizeTime))
-				Text(amPmString)
+				Text(clockSync.amPmString)
 					.font(.system(size: fontSizeAmPm))
 			}
 			.padding()
-			.offset(CGSize(width: offset, height: offset))
+			.offset(CGSize(width: clockSync.offset, height: clockSync.offset))
 			.opacity(opacity)
 			.foregroundColor(colorScheme == .light ? .black : .white)
 			.background(colorScheme == .light ? .white : .black)
@@ -57,14 +52,7 @@ struct CurrentTimeView: View {
 				updateOrientation()
 				// Keep the display on all the time
 				UIApplication.shared.isIdleTimerDisabled = true
-				updateClock()
 				showSettingsButton()
-			}
-			.onReceive(timerClock) { time in
-				syncClock()
-			}
-			.onReceive(timerBurnInMove) { time in
-				offset = Int.random(in: -maxOffset...maxOffset)
 			}
 			.sheet(isPresented: $isShowingSettingsView) {
 				InfoView()
@@ -133,34 +121,6 @@ struct CurrentTimeView: View {
 			fontSizeAmPm = fontSizeAmPmPortriat
 			break
 		}
-	}
-	
-	func syncClock() {
-		updateClock()
-		// When synced to the minute then only update eveyr miinute
-		if !clockSynced {
-			let dateFormatter = DateFormatter()
-			dateFormatter.locale = Locale(identifier: "en_US")
-			dateFormatter.dateFormat = "ss"
-			let seconds = dateFormatter.string(from: Date())
-			if seconds == "00" {
-				updateClock()
-				clockSynced = true
-				timerClock = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
-				timerBurnInMove = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
-			}
-		}
-	}
-	
-	func updateClock() {
-		let dateFormatter = DateFormatter()
-		dateFormatter.locale = Locale(identifier: "en_US")
-		
-		dateFormatter.dateFormat = "h:mm"
-		timeString = dateFormatter.string(from: Date())
-		
-		dateFormatter.dateFormat = "a"
-		amPmString = dateFormatter.string(from: Date())
 	}
 	
 	func showSettingsButton() {

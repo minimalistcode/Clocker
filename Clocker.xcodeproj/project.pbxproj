@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1500B58D2A71558800335791 /* ClockSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1500B58C2A71558800335791 /* ClockSync.swift */; };
 		158591112A6C036700655160 /* ClockerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158591102A6C036700655160 /* ClockerApp.swift */; };
 		158591132A6C036700655160 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158591122A6C036700655160 /* ContentView.swift */; };
 		158591152A6C036900655160 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 158591142A6C036900655160 /* Assets.xcassets */; };
@@ -17,6 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1500B58C2A71558800335791 /* ClockSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockSync.swift; sourceTree = "<group>"; };
 		1585910D2A6C036700655160 /* Clocker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Clocker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		158591102A6C036700655160 /* ClockerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockerApp.swift; sourceTree = "<group>"; };
 		158591122A6C036700655160 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -61,6 +63,7 @@
 				158591102A6C036700655160 /* ClockerApp.swift */,
 				158591122A6C036700655160 /* ContentView.swift */,
 				1585911F2A6C129B00655160 /* CurrentTimeView.swift */,
+				1500B58C2A71558800335791 /* ClockSync.swift */,
 				15A0EEA12A6C9FB0007644B5 /* InfoView.swift */,
 				15A0EEA32A6CA983007644B5 /* AboutView.swift */,
 				158591142A6C036900655160 /* Assets.xcassets */,
@@ -152,6 +155,7 @@
 				158591202A6C129B00655160 /* CurrentTimeView.swift in Sources */,
 				158591132A6C036700655160 /* ContentView.swift in Sources */,
 				15A0EEA22A6C9FB0007644B5 /* InfoView.swift in Sources */,
+				1500B58D2A71558800335791 /* ClockSync.swift in Sources */,
 				158591112A6C036700655160 /* ClockerApp.swift in Sources */,
 				15A0EEA42A6CA983007644B5 /* AboutView.swift in Sources */,
 			);
@@ -281,7 +285,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Clocker/Clocker.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"Clocker/Preview Content\"";
 				DEVELOPMENT_TEAM = N252X29TS8;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -322,7 +326,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Clocker/Clocker.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"Clocker/Preview Content\"";
 				DEVELOPMENT_TEAM = N252X29TS8;
 				ENABLE_HARDENED_RUNTIME = YES;
