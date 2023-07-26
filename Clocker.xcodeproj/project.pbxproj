@@ -60,12 +60,12 @@
 		1585910F2A6C036700655160 /* Clocker */ = {
 			isa = PBXGroup;
 			children = (
+				15A0EEA32A6CA983007644B5 /* AboutView.swift */,
 				158591102A6C036700655160 /* ClockerApp.swift */,
 				158591122A6C036700655160 /* ContentView.swift */,
 				1585911F2A6C129B00655160 /* CurrentTimeView.swift */,
 				1500B58C2A71558800335791 /* ClockSync.swift */,
 				15A0EEA12A6C9FB0007644B5 /* InfoView.swift */,
-				15A0EEA32A6CA983007644B5 /* AboutView.swift */,
 				158591142A6C036900655160 /* Assets.xcassets */,
 				158591162A6C036900655160 /* Clocker.entitlements */,
 				158591172A6C036900655160 /* Preview Content */,
