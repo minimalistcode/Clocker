@@ -26,10 +26,15 @@ struct CurrentTimeView: View {
 	
 	let fontSizeTimePortrait: CGFloat = 110
 	let fontSizeAmPmPortriat: CGFloat = 40
-	let fontSizeTimeLandscape:  CGFloat = 225
-	let fontSizeAmPmLandscape:  CGFloat = 75
-	@State var fontSizeTime: CGFloat = 0
-	@State var fontSizeAmPm: CGFloat = 0
+	let fontSizeTimeLandscape: CGFloat = 225
+	let fontSizeAmPmLandscape: CGFloat = 75
+	@State var fontSizeTime: CGFloat
+	@State var fontSizeAmPm: CGFloat
+	
+	init() {
+		_fontSizeTime = State(initialValue: fontSizeTimePortrait)
+		_fontSizeAmPm = State(initialValue: fontSizeAmPmPortriat)
+	}
 	
 	var body: some View {
 		ZStack {
@@ -117,8 +122,6 @@ struct CurrentTimeView: View {
 			fontSizeTime = fontSizeTimeLandscape
 			fontSizeAmPm = fontSizeAmPmLandscape
 		default:
-			fontSizeTime = fontSizeTimePortrait
-			fontSizeAmPm = fontSizeAmPmPortriat
 			break
 		}
 	}
