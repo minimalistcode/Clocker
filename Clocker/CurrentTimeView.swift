@@ -12,18 +12,25 @@
 // - Move evey minute to prevent burn in
 
 import SwiftUI
+import Combine
+import OSLog
 
 struct CurrentTimeView: View {
-	@Environment(\.horizontalSizeClass) var horizontalSizeClass: UserInterfaceSizeClass?
 	@Environment(\.colorScheme) private var colorScheme
 	@AppStorage("opacity") var opacity: Double = 1.0
-	@ObservedObject var clockSync = ClockSync()
-	@State var timerBurnInMove = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
 	
+	// Brightness
+	private let opacityMaximum = 1.0
+	private let opacityMinimum = 0.05
+	private let opacityIncrement = 0.01
+	@State var locationY: CGFloat = 0
+
+	// Settings
 	@State var isShowingSettingsButton = false
-	var settingsButtonDisplaySeconds = 10
+	var settingsButtonDisplaySeconds = 5
 	@State var isShowingSettingsView = false
 	
+	// Font
 	let fontSizeTimePortrait: CGFloat = 110
 	let fontSizeAmPmPortriat: CGFloat = 40
 	let fontSizeTimeLandscape: CGFloat = 225
@@ -31,22 +38,38 @@ struct CurrentTimeView: View {
 	@State var fontSizeTime: CGFloat
 	@State var fontSizeAmPm: CGFloat
 	
+	// Date Format
+	private var dateFormatterTime = DateFormatter()
+	private var dateFormatterAmPm = DateFormatter()
+	@State var timeString: String = ""
+	@State var amPmString: String = ""
+	
+	// Burn In
+	@State var offset = 0
+	private let maxOffset = 25
+	
+	// Timer
+	@State var cancellables = Set<AnyCancellable>()
+	private let timerInterval = 0.1
+	
 	init() {
 		_fontSizeTime = State(initialValue: fontSizeTimePortrait)
 		_fontSizeAmPm = State(initialValue: fontSizeAmPmPortriat)
+		dateFormatterTime.dateFormat = "h:mm"
+		dateFormatterAmPm.dateFormat = "a"
 	}
 	
 	var body: some View {
 		ZStack {
-			Rectangle().foregroundColor(.clear) // Need to tap gesture to work on whole display
+			Rectangle().foregroundColor(.clear) // Need for gesture to work on whole display
 			HStack {
-				Text(clockSync.timeString)
+				Text(timeString)
 					.font(.system(size: fontSizeTime))
-				Text(clockSync.amPmString)
+				Text(amPmString)
 					.font(.system(size: fontSizeAmPm))
 			}
 			.padding()
-			.offset(CGSize(width: clockSync.offset, height: clockSync.offset))
+			.offset(CGSize(width: offset, height: offset))
 			.opacity(opacity)
 			.foregroundColor(colorScheme == .light ? .black : .white)
 			.background(colorScheme == .light ? .white : .black)
@@ -55,9 +78,23 @@ struct CurrentTimeView: View {
 			.persistentSystemOverlays(.hidden)
 			.onAppear {
 				updateOrientation()
+				showSettingsButton()
 				// Keep the display on all the time
 				UIApplication.shared.isIdleTimerDisabled = true
-				showSettingsButton()
+				// Timer to update the time and move the time to prevent burn in.
+				Timer
+					.publish(every: timerInterval, on: .main, in: .default)
+					.autoconnect()
+					.sink(receiveCompletion: { _ in }, receiveValue: { date in
+						let timeStringOld = timeString
+						let currentDate = Date()
+						timeString = dateFormatterTime.string(from: currentDate)
+						amPmString = dateFormatterAmPm.string(from: currentDate)
+						if timeStringOld != timeString {
+							self.offset = Int.random(in: -self.maxOffset...self.maxOffset)
+						}
+					})
+					.store(in: &cancellables)
 			}
 			.sheet(isPresented: $isShowingSettingsView) {
 				InfoView()
@@ -66,25 +103,34 @@ struct CurrentTimeView: View {
 				updateOrientation()
 			}
 			if isShowingSettingsButton {
-				SettingsButtonView(isShowingSettingsView: $isShowingSettingsView, opacity: $opacity)
+					SettingsButtonView(isShowingSettingsView: $isShowingSettingsView)
+					.transition(AnyTransition.opacity.animation(.easeOut(duration:0.5)))
 			}
 		}
 		// This content shape and geture are needed to make the gesutre work over the whole display.
 		.contentShape(Rectangle())
 		.gesture(DragGesture(minimumDistance: 1, coordinateSpace: .local)
-			.onChanged({ gesture in
-				opacity = 1.0 - gesture.location.y / UIScreen.main.bounds.height
+			.onChanged { value in
+				// Swipe up
+				if value.location.y < locationY {
+					opacity = opacity >= opacityMaximum ? opacityMaximum : opacity + opacityIncrement
+				}
+				// Swipe down
+				else {
+					opacity = opacity <= opacityMinimum ? opacityMinimum : opacity - opacityIncrement
+				}
+				locationY = value.location.y
 			})
-		)
 		.onTapGesture {
 			showSettingsButton()
 		}
 	}
 	
+	// MARK: SettingsButtonView
+	
 	struct SettingsButtonView: View {
 		@Environment(\.colorScheme) private var colorScheme
 		@Binding var isShowingSettingsView: Bool
-		@Binding var opacity: Double
 		
 		var body: some View {
 			VStack {
@@ -98,19 +144,15 @@ struct CurrentTimeView: View {
 							.frame(width: 25, height: 25)
 							.foregroundColor(colorScheme == .light ? .black : .white)
 							.background(colorScheme == .light ? .white : .black)
-							.opacity(opacity)
 					})
 					.padding()
 				}
 				Spacer()
 				Text("Swipe up/down to adjust brightness")
-					.opacity(opacity)
 			}
 		}
 	}
-	
-	// MARK: Functions
-	
+		
 	func updateOrientation() {
 		switch UIDevice.current.orientation {
 		case .portrait:
