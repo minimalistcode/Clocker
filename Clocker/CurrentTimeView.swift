@@ -17,6 +17,7 @@ import OSLog
 
 struct CurrentTimeView: View {
 	@Environment(\.colorScheme) private var colorScheme
+	@Environment(\.scenePhase) private var scenePhase
 	@AppStorage("opacity") var opacity: Double = 1.0
 	
 	// Brightness
@@ -95,6 +96,11 @@ struct CurrentTimeView: View {
 						}
 					})
 					.store(in: &cancellables)
+			}
+			.onChange(of: scenePhase) { newPhase in
+				if newPhase == .active {
+					showSettingsButton()
+				}
 			}
 			.sheet(isPresented: $isShowingSettingsView) {
 				InfoView()
