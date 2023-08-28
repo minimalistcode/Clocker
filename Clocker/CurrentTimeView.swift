@@ -9,7 +9,7 @@
 // Features
 // - Updates every minute
 // - Dim with swipe up/down
-// - Move evey minute to prevent burn in
+// - Moves evey minute to prevent burn in
 
 import SwiftUI
 import Combine
@@ -24,8 +24,7 @@ struct CurrentTimeView: View {
 	private let opacityMaximum = 1.0
 	private let opacityMinimum = 0.05
 	private let opacityIncrement = 0.01
-	@State var locationY: CGFloat = 0
-
+	
 	// Settings
 	@State var isShowingSettingsButton = false
 	var settingsButtonDisplaySeconds = 5
@@ -46,8 +45,9 @@ struct CurrentTimeView: View {
 	@State var amPmString: String = ""
 	
 	// Burn In
-	@State var offset = 0
+	@State var locationY: CGFloat = 0
 	private let maxOffset = 25
+	@State var offset = 0
 	
 	// Timer
 	@State var cancellables = Set<AnyCancellable>()
@@ -63,11 +63,13 @@ struct CurrentTimeView: View {
 	var body: some View {
 		ZStack {
 			Rectangle().foregroundColor(.clear) // Need for gesture to work on whole display
-			HStack {
-				Text(timeString)
-					.font(.system(size: fontSizeTime))
-				Text(amPmString)
-					.font(.system(size: fontSizeAmPm))
+			VStack {
+				HStack {
+					Text(timeString)
+						.font(.system(size: fontSizeTime))
+					Text(amPmString)
+						.font(.system(size: fontSizeAmPm))
+				}
 			}
 			.padding()
 			.offset(CGSize(width: offset, height: offset))
@@ -75,7 +77,7 @@ struct CurrentTimeView: View {
 			.foregroundColor(colorScheme == .light ? .black : .white)
 			.background(colorScheme == .light ? .white : .black)
 			.preferredColorScheme(.dark)
-			.statusBar(hidden: true)
+			.statusBarHidden((isShowingSettingsButton || isShowingSettingsView) ? false : true)
 			.persistentSystemOverlays(.hidden)
 			.onAppear {
 				updateOrientation()
@@ -109,8 +111,7 @@ struct CurrentTimeView: View {
 				updateOrientation()
 			}
 			if isShowingSettingsButton {
-					SettingsButtonView(isShowingSettingsView: $isShowingSettingsView)
-					.transition(AnyTransition.opacity.animation(.easeOut(duration:0.5)))
+				SettingsButtonView(isShowingSettingsView: $isShowingSettingsView)
 			}
 		}
 		// This content shape and geture are needed to make the gesutre work over the whole display.
@@ -158,7 +159,7 @@ struct CurrentTimeView: View {
 			}
 		}
 	}
-		
+	
 	func updateOrientation() {
 		switch UIDevice.current.orientation {
 		case .portrait:

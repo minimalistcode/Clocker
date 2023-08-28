@@ -18,7 +18,7 @@
 					<key>StartingLineNumber</key>
 					<string>12</string>
 					<key>Timestamp</key>
-					<string>714694285.7715</string>
+					<string>714914486.823723</string>
 				</dict>
 				<key>rebasable-url</key>
 				<dict>
@@ -38,7 +38,7 @@
 </string>
 				<key>leading</key>
 				<string>// - Dim with swipe up/down
-// - Move evey minute to prevent burn in
+// - Moves evey minute to prevent burn in
 </string>
 				<key>trailing</key>
 				<string>import SwiftUI

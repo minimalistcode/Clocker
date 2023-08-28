@@ -14,11 +14,14 @@ struct AboutView: View {
 	private let versionString: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
 	private let imageSize: CGSize = CGSize(width: 125, height: 125)
 	private let details: String
+	private let detailsLong: String
 	private var appName: String
+	@State var isLongPress: Bool = false
 	
 	init() {
 		appName = Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as! String
 		details = "Version \(versionString)\n\(copyrightString)"
+		detailsLong = "Version \(versionString) (\(buildString))\n\(copyrightString)"
 	}
 	
 	var body: some View {
@@ -32,8 +35,11 @@ struct AboutView: View {
 			Spacer(minLength: 25)
 			Text(appName).font(.title2)
 			Spacer(minLength: 25)
-			Text(details)
+			Text(isLongPress ? detailsLong : details)
 			.multilineTextAlignment(.center)
+				.onLongPressGesture {
+					isLongPress.toggle()
+				}
 		}
 		.font(.body)
 	}
