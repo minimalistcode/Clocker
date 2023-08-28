@@ -177,9 +177,13 @@ struct CurrentTimeView: View {
 	
 	func showSettingsButton() {
 		Task {
-			isShowingSettingsButton = true
-			try? await Task.sleep(for: .seconds(settingsButtonDisplaySeconds))
-			isShowingSettingsButton = false
+			if !isShowingSettingsButton {
+				print("showSettingsButton 111 \(Date())")
+				isShowingSettingsButton = true
+				try? await Task.sleep(for: .seconds(settingsButtonDisplaySeconds))
+				isShowingSettingsButton = false
+				print("showSettingsButton 222 \(Date())")
+			}
 		}
 	}
 }
